@@ -81,10 +81,9 @@ void MainWindow::StartRace(void){
 
     if(ui->rb_qtConcur->isChecked()){
         QFuture fut1 = QtConcurrent::run(&ExampleRace::DoWork, concurRace1, &number, ui->rb_mutexOn->isChecked(), ui->sb_initNum->value());
-        QFuture fut2 = QtConcurrent::run(&ExampleRace::DoWork, concurRace1, &number, ui->rb_mutexOn->isChecked(), ui->sb_initNum->value());
-        while(fut1.isFinished() == false && fut2.isFinished() == false) {};
-        ui->te_debug->append("Проверочное число равно: " + QString::number(number) + ", а должно быть " +
-                                 QString::number(ui->sb_initNum->value()*2));
+        fut1.waitForFinished();
+        QFuture fut2 = QtConcurrent::run(&ExampleRace::DoWork, concurRace2, &number, ui->rb_mutexOn->isChecked(), ui->sb_initNum->value());
+
         //ui->te_debug->append("Выполни ДЗ!");
         //Тут должен быть код ДЗ
 
